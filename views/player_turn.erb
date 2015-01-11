@@ -1,0 +1,43 @@
+<h4>We have dealt two cards to each player.</h4>
+<hr>
+
+<!-- <h4>Our deck is comprised of the following (<%= session[:deck].length %>):</h4>
+</br>
+
+<p><%= show_cards(session[:deck]) %></p>
+<hr>
+
+<h4>Dealer Hand (<%= session[:dealer_hand].length %>):</h4>
+<p><%= show_cards(session[:dealer_hand]) %></p>
+<h5>Dealer has a value of: <%= calculate_value(session[:dealer_hand]) %></h5>
+<hr> -->
+
+<h4>Dealer Hand (2):</h4>
+<p><b>First card hidden</b> || <%= session[:dealer_hand][1][0] %> of <%= session[:dealer_hand][1][1] %> || </p>
+<hr>
+
+
+
+<h4><%= session[:player_name] %>'s Hand (<%= session[:player_hand].length %>):</h4>
+<p><%= show_cards(session[:player_hand]) %></p>
+<h5>Player has a value of: <%= calculate_value(session[:player_hand]) %></h5>
+<hr>
+
+
+
+<% if calculate_value(session[:player_hand]) == 21 %>
+  <h3>Blackjack! <%= session[:player_name] %> wins!</h3>
+  <hr>
+  <h4>Play again?</h4>
+  <a href='/game' class='btn'>Yes</a>
+  <a href='/bye' class='btn'>No</a>
+<% elsif calculate_value(session[:player_hand]) > 21 %>
+  <h3><%= session[:player_name] %> busts! <%= session[:player_name] %> loses.</h3>
+  <hr>
+  <h4>Play again?</h4>
+  <a href='/game' class='btn'>Yes</a>
+  <a href='/bye' class='btn'>No</a>
+<% else %>
+  <a href='/hit' class='btn'>Hit!</a>
+  <a href='/stay' class='btn'>Stay!</a>
+<% end %>

@@ -1,0 +1,24 @@
+<h4>Dealer Hand (<%= session[:dealer_hand].length %>):</h4>
+<p><%= show_cards(session[:dealer_hand]) %></p>
+<h5>Dealer has a value of: <%= calculate_value(session[:dealer_hand]) %></h5>
+<hr>
+
+<h4><%= session[:player_name] %>'s Hand (<%= session[:player_hand].length %>):</h4>
+<p><%= show_cards(session[:player_hand]) %></p>
+<h5>Player has a value of: <%= calculate_value(session[:player_hand]) %></h5>
+<hr>
+
+<% if calculate_value(session[:player_hand]) > calculate_value(session[:dealer_hand]) %>
+  <h3>Congratulations <%= session[:player_name] %>. <%= session[:player_name] %> wins!</h3>
+<% elsif calculate_value(session[:dealer_hand]) > 21 %>
+  <h3>The dealer busts! <%= session[:player_name] %> wins!</h3>
+<% elsif calculate_value(session[:dealer_hand]) <= 21 && calculate_value(session[:player_hand]) < calculate_value(session[:dealer_hand]) %>
+  <h3>Unfortunately the dealer has a higher value. <%= session[:player_name] %> loses.</h3>
+<% elsif calculate_value(session[:player_hand]) == calculate_value(session[:dealer_hand]) %>
+  <h3>The values are the same. It's a tie!</h3>
+<% end %>
+
+<hr>
+<h4>Play again?</h4>
+<a href='/game' class='btn'>Yes</a>
+<a href='/bye' class='btn'>No</a>

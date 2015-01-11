@@ -1,0 +1,13 @@
+<h4>Hello, <%= session[:player_name] %>!</h4>
+<hr>
+
+<h4>Our deck is comprised of the following (<%= session[:deck].length %>):</h4>
+</br>
+<p>
+  <% session[:deck].each do |card| %>
+    <%= prettify(card) + ' || '%>
+  <% end %>
+</p>
+<hr>
+
+<a href='/shuffle' class='btn'>Let's shuffle the deck!</a>
