@@ -1,10 +1,16 @@
 <h4>Dealer Hand (<%= session[:dealer_hand].length %>):</h4>
 <p><%= show_cards(session[:dealer_hand]) %></p>
+<% session[:dealer_hand].each do |card| %>
+  <%= show_one_image(card) %>
+<% end %>
 <h5>Dealer has a value of: <%= calculate_value(session[:dealer_hand]) %></h5>
 <hr>
 
 <h4><%= session[:player_name] %>'s Hand (<%= session[:player_hand].length %>):</h4>
 <p><%= show_cards(session[:player_hand]) %></p>
+<% session[:player_hand].each do |card| %>
+  <%= show_one_image(card) %>
+<% end %>
 <h5>Player has a value of: <%= calculate_value(session[:player_hand]) %></h5>
 <hr>
 

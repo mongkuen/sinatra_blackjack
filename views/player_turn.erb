@@ -14,12 +14,14 @@
 
 <h4>Dealer Hand (2):</h4>
 <p><b>First card hidden</b> || <%= session[:dealer_hand][1][0] %> of <%= session[:dealer_hand][1][1] %> || </p>
+<%= show_dealer_image(session[:dealer_hand]) %>
 <hr>
-
-
 
 <h4><%= session[:player_name] %>'s Hand (<%= session[:player_hand].length %>):</h4>
 <p><%= show_cards(session[:player_hand]) %></p>
+<% session[:player_hand].each do |card| %>
+  <%= show_one_image(card) %>
+<% end %>
 <h5>Player has a value of: <%= calculate_value(session[:player_hand]) %></h5>
 <hr>
 

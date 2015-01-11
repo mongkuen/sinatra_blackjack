@@ -33,6 +33,14 @@ helpers do
     string
   end
 
+  def show_dealer_image(cards)
+    '<img src="images/cards/' + cards[1][1].downcase + "_" + cards[1][0].downcase + '.jpg">'
+  end
+
+  def show_one_image(card)
+    '<img src="images/cards/' + card[1].downcase + "_" + card[0].downcase + '.jpg">'
+  end
+
   def deal_card(hand, deck)
     hand << deck.pop
   end
