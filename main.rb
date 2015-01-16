@@ -54,6 +54,23 @@ helpers do
     count
   end
 
+  def win(msg)
+    @play_again = true
+    session[:player_pot] += session[:player_bet]
+    @message = "#{msg} #{session[:player_name]} wins!"
+  end
+
+  def lose(msg)
+    @play_again = true
+    session[:player_pot] -= session[:player_bet]
+    @message = "#{msg} #{session[:player_name]} loses."
+  end
+
+  def tie(msg)
+    @play_again = true
+    @message = "#{msg} It's a tie."
+  end
+
 end
 
 get '/' do
@@ -72,6 +89,7 @@ get '/game' do
   session[:player_turn] = true
   session[:player_hand] = []
   session[:dealer_hand] = []
+  session[:old_pot] = session[:player_pot]
   erb :game
 end
 
@@ -89,10 +107,46 @@ post '/game' do
 end
 
 get '/player_turn' do
-  session[:play_again] = false
+  @play_again = false
+  @hit_or_stay = false
+  @dealer_hit = false
+  @message = ''
   if session[:player_hand].empty?
     2.times { deal_card(session[:player_hand], session[:deck]) }
     2.times { deal_card(session[:dealer_hand], session[:deck]) }
+  end
+  if session[:player_turn]
+    case
+    when calculate_value(session[:player_hand]) == 21
+      #"blackjack" win msg + add_pot + play_again + show_updated_pot
+      win("#{session[:player_name]} hit blackjack!")
+    when calculate_value(session[:player_hand]) > 21
+      #"bust" lose msg + minus_pot + play_again + show_updated_pot
+      lose("#{session[:player_name]} has busted...")
+    else
+      #hit_or_stay buttons
+      @hit_or_stay = true
+    end
+  else
+    if calculate_value(session[:dealer_hand]) >= 17
+      case
+      when calculate_value(session[:player_hand]) > calculate_value(session[:dealer_hand])
+        #"Higher value" win msg + add_pot + play_again + show_updated_pot
+        win("#{session[:player_name]} has a greater value!")
+      when calculate_value(session[:dealer_hand]) > 21
+        #"Dealer busts" win msg + add_pot + play_again + show_updated_pot
+        win("The dealer busted!")
+      when calculate_value(session[:dealer_hand]) <= 21 && calculate_value(session[:player_hand]) < calculate_value(session[:dealer_hand])
+        #"lower value" lose msg + minus_pot + play_again + show_updated_pot
+        lose("The dealer has a higher value...")
+      else
+        #"it's a tie" tie msg + play_again
+        tie("The values are the same.")
+      end
+    elsif calculate_value(session[:dealer_hand]) < 17
+      #dealer_must_hit
+      @dealer_hit = true
+    end
   end
   erb :player_turn
 end
