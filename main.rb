@@ -86,11 +86,14 @@ end
 get '/player_turn' do
   if session[:player_hand].empty?
     2.times { deal_card(session[:player_hand], session[:deck]) }
-    begin
-      deal_card(session[:dealer_hand], session[:deck])
-    end until calculate_value(session[:dealer_hand]) > 17
+    2.times { deal_card(session[:dealer_hand], session[:deck]) }
   end
   erb :player_turn
+end
+
+post '/dealer_hit' do
+  deal_card(session[:dealer_hand], session[:deck])
+  redirect '/stay'
 end
 
 get '/bye' do
