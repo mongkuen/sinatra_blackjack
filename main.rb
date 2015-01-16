@@ -118,33 +118,25 @@ get '/player_turn' do
   if session[:player_turn]
     case
     when calculate_value(session[:player_hand]) == 21
-      #"blackjack" win msg + add_pot + play_again + show_updated_pot
       win("#{session[:player_name]} hit blackjack!")
     when calculate_value(session[:player_hand]) > 21
-      #"bust" lose msg + minus_pot + play_again + show_updated_pot
       lose("#{session[:player_name]} has busted...")
     else
-      #hit_or_stay buttons
       @hit_or_stay = true
     end
   else
     if calculate_value(session[:dealer_hand]) >= 17
       case
       when calculate_value(session[:player_hand]) > calculate_value(session[:dealer_hand])
-        #"Higher value" win msg + add_pot + play_again + show_updated_pot
         win("#{session[:player_name]} has a greater value!")
       when calculate_value(session[:dealer_hand]) > 21
-        #"Dealer busts" win msg + add_pot + play_again + show_updated_pot
         win("The dealer busted!")
       when calculate_value(session[:dealer_hand]) <= 21 && calculate_value(session[:player_hand]) < calculate_value(session[:dealer_hand])
-        #"lower value" lose msg + minus_pot + play_again + show_updated_pot
         lose("The dealer has a higher value...")
       else
-        #"it's a tie" tie msg + play_again
         tie("The values are the same.")
       end
     elsif calculate_value(session[:dealer_hand]) < 17
-      #dealer_must_hit
       @dealer_hit = true
     end
   end
@@ -167,7 +159,7 @@ end
 
 get '/hit' do
   deal_card(session[:player_hand], session[:deck])
-  redirect '/player_turn'
+  redirect 'player_turn'
 end
 
 get '/stay' do
