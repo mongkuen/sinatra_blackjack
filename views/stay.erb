@@ -5,26 +5,39 @@
 <% end %>
 <h5>Dealer has a value of: <%= calculate_value(session[:dealer_hand]) %></h5>
 <hr>
+
 <!-- Player hand and value -->
 <h4><%= session[:player_name] %>'s Hand (<%= session[:player_hand].length %>):</h4>
 <% session[:player_hand].each do |card| %>
   <%= show_one_image(card) %>
 <% end %>
-<h5>Player has a value of: <%= calculate_value(session[:player_hand]) %></h5>
+<h5><%= session[:player_name] %> has a value of: <%= calculate_value(session[:player_hand]) %></h5>
 <hr>
+
+<!-- Player pot and bet -->
+<h5><%= session[:player_name] %>'s pot: $<%= session[:player_pot] %></br><%= session[:player_name] %>'s bet: $<%= session[:player_bet] %>.</h5>
+</br>
+
 
 <% if calculate_value(session[:player_hand]) > calculate_value(session[:dealer_hand]) %>
   <h3>Congratulations <%= session[:player_name] %>. <%= session[:player_name] %> wins!</h3>
+  <% session[:player_pot] += session[:player_bet] %>
+  <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
 
 <% elsif calculate_value(session[:dealer_hand]) > 21 %>
   <h3>The dealer busts! <%= session[:player_name] %> wins!</h3>
+  <% session[:player_pot] += session[:player_bet] %>
+  <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
 
 <% elsif calculate_value(session[:dealer_hand]) <= 21 && calculate_value(session[:player_hand]) < calculate_value(session[:dealer_hand]) %>
   <h3>Unfortunately the dealer has a higher value. <%= session[:player_name] %> loses.</h3>
+  <% session[:player_pot] -= session[:player_bet] %>
+  <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
 
 <% elsif calculate_value(session[:player_hand]) == calculate_value(session[:dealer_hand]) %>
   <h3>The values are the same. It's a tie!</h3>
 <% end %>
+
 
 <hr>
 <h4>Play again?</h4>

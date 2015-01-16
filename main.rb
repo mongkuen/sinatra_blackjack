@@ -2,8 +2,6 @@ require 'rubygems'
 require 'sinatra'
 require 'pry'
 
-# set :sessions, true
-
 use Rack::Session::Cookie, :key => 'rack.session',
                            :path => '/',
                            :secret => 'your_secret'
@@ -14,7 +12,7 @@ helpers do
     deck = []
     suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
     value = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King']
-    deck = value.product(suits)
+    deck = value.product(suits).shuffle
   end
 
   def show_dealer_image(cards)
@@ -59,16 +57,16 @@ get '/' do
 end
 
 post '/set_name' do
-  session[:player_name] = params[:player_name]
+  session[:player_name] = params[:player_name].capitalize
   session[:player_pot] = 100
   redirect '/game'
 end
 
 get '/game' do
   session[:deck] = generate_deck
+  # session[:stay] = false
   session[:player_hand] = []
   session[:dealer_hand] = []
-  session[:deck].shuffle!
   erb :game
 end
 
@@ -99,6 +97,11 @@ get '/bye' do
   erb :bye
 end
 
+post '/borrow' do
+  session[:player_pot] = 100
+  redirect '/game'
+end
+
 get '/hit' do
   deal_card(session[:player_hand], session[:deck])
   redirect '/player_turn'
@@ -107,8 +110,6 @@ end
 get '/stay' do
   erb :stay
 end
-
-
 
 
 
