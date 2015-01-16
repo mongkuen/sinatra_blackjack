@@ -1,41 +1,85 @@
-<!-- Dealer hand and hidden card-->
-<h4>Dealer Hand (2):</h4>
-<img src="images/cards/cover.jpg">
-<%= show_dealer_image(session[:dealer_hand]) %>
-<hr>
+<h4>Dealer Hand (<%= session[:dealer_hand].length %>):</h4>
 
-<!-- Player hand and value -->
-<h4><%= session[:player_name] %>'s Hand (<%= session[:player_hand].length %>):</h4>
-<% session[:player_hand].each do |card| %>
-  <%= show_one_image(card) %>
+<% if session[:player_turn] %>
+
+  <img src="images/cards/cover.jpg">
+  <%= show_dealer_image(session[:dealer_hand]) %>
+
+<% else %>
+
+  <%= show_all_image(session[:dealer_hand]) %>
+  <h5>Dealer has a value of: <%= calculate_value(session[:dealer_hand]) %></h5>
+
+  <% if calculate_value(session[:dealer_hand]) < 17 %>
+    <p4>The dealer has less than 17.</p4>
+    <a href='/dealer_hit' class='btn btn-primary'>Show dealer's next hit</a>
+  <% end %>
+
 <% end %>
+
+<hr>
+<h4><%= session[:player_name] %>'s Hand (<%= session[:player_hand].length %>):</h4>
+<%= show_all_image(session[:player_hand]) %>
 <h5><%= session[:player_name] %> has a value of: <%= calculate_value(session[:player_hand]) %></h5>
 <hr>
 
-<!-- Player pot and bet -->
 <h5><%= session[:player_name] %>'s pot: $<%= session[:player_pot] %></br><%= session[:player_name] %>'s bet: $<%= session[:player_bet] %>.</h5>
 </br>
 
-<% if calculate_value(session[:player_hand]) == 21 %>
-  <h3>Blackjack! <%= session[:player_name] %> wins!</h3>
-  <% session[:player_pot] += session[:player_bet] %>
-  <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
-  <hr>
-  <h4>Play again?</h4>
-  <a href='/game' class='btn btn-success'>Yes</a>
-  <a href='/bye' class='btn btn-warning'>No</a>
-<% elsif calculate_value(session[:player_hand]) > 21 %>
-  <h3><%= session[:player_name] %> busts! <%= session[:player_name] %> loses.</h3>
-  <% session[:player_pot] -= session[:player_bet] %>
-  <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
-  <hr>
-  <h4>Play again?</h4>
-  <a href='/game' class='btn btn-success'>Yes</a>
-  <a href='/bye' class='btn btn-warning'>No</a>
+<% if session[:player_turn] %>
+
+  <% if calculate_value(session[:player_hand]) == 21 %>
+    <h3>Blackjack! <%= session[:player_name] %> wins!</h3>
+    <% session[:player_pot] += session[:player_bet] %>
+    <% session[:play_again] = true %>
+    <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
+    <hr>
+
+  <% elsif calculate_value(session[:player_hand]) > 21 %>
+    <h3><%= session[:player_name] %> busts! <%= session[:player_name] %> loses.</h3>
+    <% session[:player_pot] -= session[:player_bet] %>
+    <% session[:play_again] = true %>
+    <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
+    <hr>
+  <% else %>
+    <a href='/hit' class='btn btn-success'>Hit!</a>
+    <a href='/stay' class='btn btn-warning'>Stay!</a>
+  <% end %>
+
 <% else %>
-  <a href='/hit' class='btn btn-success'>Hit!</a>
-  <a href='/stay' class='btn btn-warning'>Stay!</a>
-  <!-- <form action='/stay' method='post'>
-    <input type='submit' class='btn btn-warning' value='Stay!'>
-  </form> -->
+
+  <% if calculate_value(session[:dealer_hand]) >= 17 %>
+
+  <% if calculate_value(session[:player_hand]) > calculate_value(session[:dealer_hand]) %>
+  <h3>Congratulations <%= session[:player_name] %>. <%= session[:player_name] %> wins!</h3>
+  <% session[:player_pot] += session[:player_bet] %>
+  <% session[:play_again] = true %>
+  <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
+
+  <% elsif calculate_value(session[:dealer_hand]) > 21 %>
+  <h3>The dealer busts! <%= session[:player_name] %> wins!</h3>
+  <% session[:player_pot] += session[:player_bet] %>
+  <% session[:play_again] = true %>
+  <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
+
+  <% elsif calculate_value(session[:dealer_hand]) <= 21 && calculate_value(session[:player_hand]) < calculate_value(session[:dealer_hand]) %>
+  <h3>Unfortunately the dealer has a higher value. <%= session[:player_name] %> loses.</h3>
+  <% session[:player_pot] -= session[:player_bet] %>
+  <% session[:play_again] = true %>
+  <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
+
+  <% elsif calculate_value(session[:player_hand]) == calculate_value(session[:dealer_hand]) %>
+  <% session[:play_again] = true %>
+  <h3>The values are the same. It's a tie!</h3>
+  <% end %>
+  <hr>
+
+  <% end %>
+
+<% end %>
+
+<% if session[:play_again] %>
+  <h4>Play again?</h4>
+  <a href='/game' class='btn btn-success'>Yes</a>
+  <a href='/bye' class='btn btn-warning'>No</a>
 <% end %>

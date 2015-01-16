@@ -1,21 +1,19 @@
 <h4>Hello, <%= session[:player_name] %>!</h4>
 <hr>
 
-<% if session[:player_pot] > 0 %>
+<% if session[:game_over] %>
 
-  <h4>We've already shuffled the deck (<%= session[:deck].length %>)!</h4>
+  <h4>You're out of money. Would you like to borrow $100?</h4>
+  <a href='/borrow' class='btn btn-success'>Let's play!</a>
+  <a href='/bye' class='btn btn-warning'>No</a>
+
+<% else %>
+
+  <h4>We've shuffled the deck (<%= session[:deck].length %>)!</h4>
   <h4><%= session[:player_name] %> has $<%= session[:player_pot] %>. How much should be bet for this hand?</h4>
   <form action="/game" method="post">
     <input type="text" name="player_bet">
     <input type="submit" class="btn btn-success" value="Let's play!">
   </form>
-
-<% else %>
-
-  <h4>You're out of money. Would you like to borrow $100?</h4>
-  <form action="/borrow" method="post">
-    <input type="submit" class="btn btn-success" value="Let's play!">
-  </form>
-  <a href='/bye' class='btn btn-warning'>No</a>
 
 <% end %>

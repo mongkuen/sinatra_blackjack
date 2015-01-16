@@ -19,8 +19,12 @@ helpers do
     '<img src="images/cards/' + cards[1][1].downcase + "_" + cards[1][0].downcase + '.jpg">'
   end
 
-  def show_one_image(card)
-    '<img src="images/cards/' + card[1].downcase + "_" + card[0].downcase + '.jpg">'
+  def show_all_image(hand)
+    return_value = ""
+    hand.each do |card|
+      return_value += '<img src="images/cards/' + card[1].downcase + "_" + card[0].downcase + '.jpg">'
+    end
+    return_value
   end
 
   def deal_card(hand, deck)
@@ -64,7 +68,8 @@ end
 
 get '/game' do
   session[:deck] = generate_deck
-  # session[:stay] = false
+  session[:game_over] = session[:player_pot] > 0 ? false : true
+  session[:player_turn] = true
   session[:player_hand] = []
   session[:dealer_hand] = []
   erb :game
@@ -84,6 +89,7 @@ post '/game' do
 end
 
 get '/player_turn' do
+  session[:play_again] = false
   if session[:player_hand].empty?
     2.times { deal_card(session[:player_hand], session[:deck]) }
     2.times { deal_card(session[:dealer_hand], session[:deck]) }
@@ -91,16 +97,16 @@ get '/player_turn' do
   erb :player_turn
 end
 
-post '/dealer_hit' do
+get '/dealer_hit' do
   deal_card(session[:dealer_hand], session[:deck])
-  redirect '/stay'
+  redirect '/player_turn'
 end
 
 get '/bye' do
   erb :bye
 end
 
-post '/borrow' do
+get '/borrow' do
   session[:player_pot] = 100
   redirect '/game'
 end
@@ -111,7 +117,8 @@ get '/hit' do
 end
 
 get '/stay' do
-  erb :stay
+  session[:player_turn] = false
+  redirect '/player_turn'
 end
 
 
