@@ -1,30 +1,19 @@
 <h4>We have dealt two cards to each player.</h4>
 <hr>
 
-<!-- <h4>Our deck is comprised of the following (<%= session[:deck].length %>):</h4>
-</br>
-
-<p><%= show_cards(session[:deck]) %></p>
-<hr>
-
-<h4>Dealer Hand (<%= session[:dealer_hand].length %>):</h4>
-<p><%= show_cards(session[:dealer_hand]) %></p>
-<h5>Dealer has a value of: <%= calculate_value(session[:dealer_hand]) %></h5>
-<hr> -->
-
+<!-- Dealer hand and hidden card-->
 <h4>Dealer Hand (2):</h4>
-<!-- <p><b>First card hidden</b> || <%= session[:dealer_hand][1][0] %> of <%= session[:dealer_hand][1][1] %> || </p> -->
 <img src="images/cards/cover.jpg">
 <%= show_dealer_image(session[:dealer_hand]) %>
 <hr>
-
+<!-- Player hand and value-->
 <h4><%= session[:player_name] %>'s Hand (<%= session[:player_hand].length %>):</h4>
-<!-- <p><%= show_cards(session[:player_hand]) %></p> -->
 <% session[:player_hand].each do |card| %>
   <%= show_one_image(card) %>
 <% end %>
 <h5><%= session[:player_name] %> has a value of: <%= calculate_value(session[:player_hand]) %></h5>
 <hr>
+<!-- Player pot and bet -->
 <h5><%= session[:player_name] %>'s pot: $<%= session[:player_pot] %></br><%= session[:player_name] %>'s bet: $<%= session[:player_bet] %>.</h5>
 </br>
 

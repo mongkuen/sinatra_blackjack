@@ -1,15 +1,6 @@
 <h4>Hello, <%= session[:player_name] %>!</h4>
 <hr>
 
-<!-- <h4>Our deck is comprised of the following (<%= session[:deck].length %>):</h4>
-</br>
-<p>
-  <% session[:deck].each do |card| %>
-    <%= prettify(card) + ' || '%>
-  <% end %>
-</p>
-<hr> -->
-
 <h4>We've already shuffled the deck for you (<%= session[:deck].length %>)!</h4>
 <h4>You have $<%= session[:player_pot] %>. How much would you like to bet?</h4>
 
@@ -17,7 +8,5 @@
   <input type="text" name="player_bet">
   <input type="submit" class="btn">
 </form>
-
-
 
 <a href='/player_turn' class='btn'>Lets play!</a>

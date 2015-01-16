@@ -17,19 +17,6 @@ helpers do
     deck = value.product(suits)
   end
 
-  #redundant
-  def prettify(card)
-    "#{card[0]} of #{card[1]}"
-  end
-  #redundant
-  def show_cards(cards)
-    string = ''
-    cards.each do |card|
-      string += " #{card[0]} of #{card[1]} ||"
-    end
-    string
-  end
-
   def show_dealer_image(cards)
     '<img src="images/cards/' + cards[1][1].downcase + "_" + cards[1][0].downcase + '.jpg">'
   end
