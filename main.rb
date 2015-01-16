@@ -17,14 +17,11 @@ helpers do
     deck = value.product(suits)
   end
 
-  def shuffle!(deck)
-    deck.shuffle!
-  end
-
+  #redundant
   def prettify(card)
     "#{card[0]} of #{card[1]}"
   end
-
+  #redundant
   def show_cards(cards)
     string = ''
     cards.each do |card|
@@ -76,6 +73,7 @@ end
 
 post '/set_name' do
   session[:player_name] = params[:player_name]
+  session[:player_pot] = 100
   redirect '/game'
 end
 
@@ -83,12 +81,21 @@ get '/game' do
   session[:deck] = generate_deck
   session[:player_hand] = []
   session[:dealer_hand] = []
+  session[:deck].shuffle!
   erb :game
 end
 
-get '/shuffle' do
-  shuffle!(session[:deck])
-  erb :shuffle
+post '/game' do
+  if params[:player_bet].to_i == 0
+    @error = "You cannot bet that amount!"
+    halt erb(:game)
+  elsif params[:player_bet].to_i > session[:player_pot]
+    @error = "You cannot bet more than how much you have!"
+    halt erb(:game)
+  else
+    session[:player_bet] = params[:player_bet].to_i
+    redirect '/player_turn'
+  end
 end
 
 get '/player_turn' do
