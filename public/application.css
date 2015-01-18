@@ -1,0 +1,100 @@
+html, body {
+  height: 100%;
+  margin: 0px;
+}
+
+.container {
+  height: 100%;
+}
+
+.placeholder {
+  height: 30%;
+}
+
+body#background {
+  background:
+  linear-gradient(
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.6)
+    ),
+    url('/images/cover.jpg') no-repeat 50% 50% fixed;
+    background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    -webkit-background-size: cover;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Dosis', sans-serif;
+  color: rgb(223, 223, 223);
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  color: rgb(223, 223, 223);
+}
+
+.brand {
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+}
+
+.brand_highlight {
+  color: red;
+}
+
+.brand:hover > .brand_highlight {
+  color: rgb(255, 100, 100)
+}
+
+.highlight {
+  color: red;
+}
+
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+  color: #BEBEBE;
+}
+
+@media (min-width: 768px) {
+  .navbar-header {
+    float: none;
+  }
+}
+
+#player_info {
+  float: right;
+}
+
+.form-control {
+  border-radius: 0;
+  text-align: center;
+}
+
+.btn {
+  border-radius: 0;
+  padding: 6px 50px;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+
+.btn-danger:hover {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+.alert-danger {
+  color: #FFFFFF;
+  background-color: #FF4747;
+  border-color: #FF4747;
+  border-radius: 0;
+}
+
+.card {
+  max-width: 150px;
+  padding: 10px;
+}

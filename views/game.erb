@@ -1,19 +1,27 @@
-<h4>Hello, <%= session[:player_name] %>!</h4>
+<div class='placeholder'></div>
+<h1>Hell<span class="highlight">o</span>, <%= session[:player_name] %>.</h1>
 <hr>
 
 <% if session[:game_over] %>
 
-  <h4>You're out of money. Would you like to borrow $100?</h4>
-  <a href='/borrow' class='btn btn-success'>Let's play!</a>
-  <a href='/bye' class='btn btn-warning'>No</a>
+  <h4>Out of cash. Addicted?</h4>
+  </br>
+  <a href='/borrow' class='btn btn-danger'>Borrow $100</a>
+  <a href='/bye' class='btn btn-warning'>Leave</a>
 
 <% else %>
 
-  <h4>We've shuffled the deck (<%= session[:deck].length %>)!</h4>
-  <h4><%= session[:player_name] %> has $<%= session[:player_pot] %>. How much should be bet for this hand?</h4>
-  <form action="/game" method="post">
-    <input type="text" name="player_bet">
-    <input type="submit" class="btn btn-success" value="Let's play!">
-  </form>
+  <h4>Player has <span class="highlight">$<%= session[:player_pot] %></span>.</h4>
+  </br>
+
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <form action='/game' method='post'>
+        <input type='text' name='player_bet' class="form-control" placeholder="Bet amount">
+        </br>
+        <input id='play_hand' type='submit' class='btn btn-danger center-block' value='Play'>
+      </form>
+    </div>
+  </div>
 
 <% end %>

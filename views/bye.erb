@@ -1,5 +1,14 @@
-<h4><%= session[:player_name] %> has $<%= session[:player_pot] %>!</h4>
-<h4>Thanks for playing blackjack, Goodbye!</h4>
+<div class='placeholder'></div>
+
+<h1><%= session[:player_name] %> <span class='highlight'>leaves</span> with $<%= session[:player_pot] %></h1>
 <hr>
 
-<a href='/game' class='btn'>I've changed my mind, lets play again!</a>
+<h4>Or could we <span class='highlight'>tempt</span> you back?</h4>
+</br>
+
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <a href='/game' class='btn btn-danger center-block'>Return</a>
+  </div>
+</div>

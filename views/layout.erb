@@ -1,29 +1,42 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    <title>Blackjack</title>
-    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <title>BLACKJ&middot;A&middot;CK</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Dosis|Open+Sans|Montserrat' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/application.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="/application.js"></script>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="favicon.ico">
   </head>
-  <body style="padding-top: 50px;">
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-            <ul class="nav">
-              <li><a href="/">Blackjack</a></li>
-            </ul>
+  <body id='background' style="padding-top: 50px;">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand brand" href="/">
+            BLACKJ<span class='brand_highlight'>A</span>CK
+          </a>
+          <ul id='player_info' class="nav navbar-nav">
+            <li>
+              <a><%= session[:player_name] %>: $<span id='pot'><%= session[:player_pot] %></span></a>
+            </li>
+          </ul>
         </div>
       </div>
+    </nav>
+
+    <div class="container">
+      <%if @error %>
+        <div class="alert alert-danger"><%=@error%></div>
+      <% end %>
+      <%= yield %>
     </div>
 
-  <div class="container">
-    <%if @error %>
-      <div class="alert alert-error"><%=@error%></div>
-    <% end %>
-      <%= yield %>
-  </div>
   </body>
+
 </html>

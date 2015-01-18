@@ -1,37 +1,56 @@
-<div id='game'>
-  <h4>Dealer Hand (<%= session[:dealer_hand].length %>):</h4>
+<div id='game' class='row'>
+  <div class="col-md-8 col-md-offset-2">
 
-  <% if session[:player_turn] %>
-    <img src="images/cards/cover.jpg">
-    <%= show_dealer_image(session[:dealer_hand]) %>
-  <% else %>
-    <%= show_all_image(session[:dealer_hand]) %>
-    <h5>Dealer has a value of: <%= calculate_value(session[:dealer_hand]) %></h5>
-  <% end %>
+    <h1>Current <span class='highlight'>Bet</span>: $<%= session[:player_bet] %>.</h1>
+    <hr>
 
-  <% if @dealer_hit %>
-    <p4>The dealer has less than 17.</p4>
-    <a id='dealer' href='/dealer_hit' class='btn btn-primary'>Show dealer's next hit</a>
-  <% end %>
+    <% if session[:player_turn] %>
 
-  <hr>
-  <h4><%= session[:player_name] %>'s Hand (<%= session[:player_hand].length %>):</h4>
-  <%= show_all_image(session[:player_hand]) %>
-  <h5><%= session[:player_name] %> has a value of: <%= calculate_value(session[:player_hand]) %></h5>
-  <hr>
-  <h5><%= session[:player_name] %>'s pot: $<%= session[:old_pot] %></br><%= session[:player_name] %>'s bet: $<%= session[:player_bet] %>.</h5>
-  </br>
+      <h4>Dealer's Hand ( <span class='highlight'>X</span> ):</h4>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <img class="card" src="images/cardset/cover.png">
+          <%= show_dealer_image(session[:dealer_hand]) %>
+        </div>
+      </div>
 
-  <% if @hit_or_stay %>
-    <a id='hit' href='/hit' class='btn btn-success'>Hit!</a>
-    <a id='stay' href='/stay' class='btn btn-warning'>Stay!</a>
-  <% end %>
+    <% else %>
 
-  <% if @play_again %>
-    <h4><%= session[:player_name] %> has $<%= session[:player_pot] %></h4>
-    <h3><%= @message %></h3>
-    <h4>Play again?</h4>
-    <a href='/game' class='btn btn-success'>Yes</a>
-    <a href='/bye' class='btn btn-warning'>No</a>
-  <% end %>
+      <h4>Dealer's Hand ( <span class='highlight'><%= calculate_value(session[:dealer_hand]) %></span> ):</h4>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <%= show_all_image(session[:dealer_hand]) %>
+        </div>
+      </div>
+
+    <% end %>
+
+    <hr>
+    <h4><%= session[:player_name] %>'s Hand ( <span class='highlight'><%= calculate_value(session[:player_hand]) %></span> ):</h4>
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <%= show_all_image(session[:player_hand]) %>
+      </div>
+    </div>
+    <hr>
+
+
+    <% if @hit_or_stay %>
+      <h3>Pick your poison:</h3>
+      <a id='hit' href='/hit' class='btn btn-danger'>Hit</a>
+      <a id='stay' href='/stay' class='btn btn-warning'>Stay</a>
+    <% end %>
+
+    <% if @play_again %>
+      <h3><%= @message %></h3>
+      <a href='/game' class='btn btn-danger'>Deal again</a>
+      <a href='/bye' class='btn btn-warning'>Leave</a>
+    <% end %>
+
+    <% if @dealer_hit %>
+      <h3>Dealer below 17:</h3>
+      <a id='dealer' href='/dealer_hit' class='btn btn-warning'>Dealer hits</a>
+    <% end %>
+
+  </div>
 </div>
